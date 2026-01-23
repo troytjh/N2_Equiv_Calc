@@ -1,0 +1,28 @@
+[Icon Theme]
+Name=N2_Equiv-icons
+Comment=Icons
+
+########## Directories
+########## ordered by category and alphabetically
+
+Directories=actions/32,actions/24,mimetypes/22
+########## Actions
+########## ordered by size
+
+[actions/24]
+Size=24
+Context=Actions
+Type=Scalable
+#MaxSize=24
+
+[actions/32]
+Size=32
+Context=Actions
+Type=Scalable
+#MaxSize=32
+
+[mimetypes/22]
+Size=22
+Context=MimeTypes
+Type=Scalable
+MinSize=32

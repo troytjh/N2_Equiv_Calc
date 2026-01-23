@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/index.theme</file>
+        <file>icons/actions/32/document-save.svg</file>
+        <file>icons/actions/32/folder-symbolic.svg</file>
+        <file>icons/actions/24/edit-find.svg</file>
+        <file>icons/mimetypes/22/settings.svg</file>
+    </qresource>
+</RCC>

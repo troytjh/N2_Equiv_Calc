@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="AtkinsonHyperlegible">fonts/AtkinsonHyperlegibleNext-Regular.otf</file>
+        <file>fonts/AtkinsonHyperlegibleNext-Light.otf</file>
+        <file>fonts/AtkinsonHyperlegibleNext-Medium.otf</file>
+        <file>fonts/AtkinsonHyperlegibleNext-SemiBold.otf</file>
+        <file>fonts/AtkinsonHyperlegibleNext-Bold.otf</file>
+	<file>fonts/AtkinsonHyperlegibleNext-ExtraBold.otf</file>
+    </qresource>
+</RCC>

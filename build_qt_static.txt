@@ -1,0 +1,5 @@
+set PATH=C:\Users\Troy.Hoover\Programs\Qt\Tools\Ninja;C:\Users\Troy.Hoover\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0;C:\Users\Troy.Hoover\Programs\Qt\Tools\CMake_64\bin;C:\Users\Troy.Hoover\Programs\Qt\Tools\mingw1310_64\bin;%PATH%
+
+C:\Users\Troy.Hoover\Programs\Qt\6.10.1\Src\configure.bat -prefix C:\Users\Troy.Hoover\Programs\Qt\6.10.1\static -static -static-runtime -release -skip qt3d,qt5compat,qtactiveqt,qtcharts,qtdatavis3d,qtdoc,qtgrpc,qtinsighttracker,qtmultimedia,qtquick3d,qtquick3dphysics,qtquicktimeline,qtwayland,qtwebchannel,qtwebview,qtlocation,qtmqtt,qtcoap,qthttpserver,qtlanguageserver,qtlottie,qtmqtt,qtnetworkauth,qtopcua,qtspeech,qttranslations,qtvirtualkeyboard,qtwebsockets,qtgraphs,qtquickeffectmaker,qtscxml,qtserialbus,qtserialport,qtconnectivity,qtremoteobjects,qtsensors -- -DFEATURE_qtwebengine_build=OFF
+
+ninja -j4
