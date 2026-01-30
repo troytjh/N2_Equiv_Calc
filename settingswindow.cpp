@@ -39,7 +39,7 @@ QMap<QString, double> SettingsWindow::read_excel_cf()
         out << "Cannot open Excel File. Not a file path.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), message, QMessageBox::Ok);
         return QMap<QString, double>{};
     }
 
@@ -50,7 +50,7 @@ QMap<QString, double> SettingsWindow::read_excel_cf()
         out << "Cannot open Excel File. Invalid file path";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), message, QMessageBox::Ok);
         return QMap<QString, double>{};
     }
 
@@ -61,7 +61,7 @@ QMap<QString, double> SettingsWindow::read_excel_cf()
         out << "Cannot open Excel File. Not a Excel File. (file must end with .xlsx)";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), message, QMessageBox::Ok);
         return QMap<QString, double>{};
     }
 
@@ -80,7 +80,7 @@ QMap<QString, double> SettingsWindow::read_excel_cf()
         out << "Failed to open excel sheet."
             << Qt::endl << db.lastError().text();
 
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), message, QMessageBox::Ok);
 
         db.close();
 
@@ -143,7 +143,7 @@ void SettingsWindow::on_update_cf_button_clicked()
         out << "Failed to update conversion factors.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), message, QMessageBox::Ok);
         return;
     }
 

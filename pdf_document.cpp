@@ -3,12 +3,13 @@
 #include <QMessageBox>
 #include <QMetaEnum>
 
-PDF_Document::PDF_Document(QObject *parent)
+PDF_Document::PDF_Document(QObject *parent, QWidget *widget)
     : QObject{parent}
     , m_document(new QPdfDocument(this))
     , m_conversion_factors(new Conversion_Factors(this))
     , m_sysConfig(QVector<mfc_config>(20))
     , m_chamber(new QChar())
+    , m_widget(widget)
 {
     /* Initialize Empty System Configuration */
     for(int i=0; i<20; ++i)
@@ -50,7 +51,7 @@ void PDF_Document::extract_text(QChar chamber)
         out << "Can not extract text. PDF file is not open.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+        QMessageBox::information(m_widget, tr("Notice"), message, QMessageBox::Ok);
         return;
     }
 
@@ -72,7 +73,7 @@ void PDF_Document::extract_text(QChar chamber)
         out << "Chamber not specified or not supported. Defaulting to Chamber 1.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+        QMessageBox::information(m_widget, tr("Notice"), message, QMessageBox::Ok);
 
         chamber = QChar('1');
     }
@@ -97,7 +98,7 @@ void PDF_Document::extract_text(QChar chamber)
             << "System Configuration Report may not be formatted correctly.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::critical(nullptr, tr("Error"), message, QMessageBox::Ok);
+        QMessageBox::critical(m_widget, tr("Error"), message, QMessageBox::Ok);
 
         return;
     }
@@ -139,7 +140,7 @@ void PDF_Document::extract_text(QChar chamber)
                     << Qt::endl << sysConfig_text[i];
                 //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
                 //qCDebug(lcExample).noquote() << message;
-                QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+                QMessageBox::information(m_widget, tr("Notice"), message, QMessageBox::Ok);
 
                 continue;
             }
@@ -151,7 +152,7 @@ void PDF_Document::extract_text(QChar chamber)
                     << Qt::endl << sysConfig_text[i];
                 //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
                 //qCDebug(lcExample).noquote() << message;
-                QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+                QMessageBox::warning(m_widget, tr("Warning"), message, QMessageBox::Ok);
 
                 continue;
             }
@@ -165,7 +166,7 @@ void PDF_Document::extract_text(QChar chamber)
                 << Qt::endl << sysConfig_text[i];
             //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
             //qCDebug(lcExample).noquote() << message;
-            QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+            QMessageBox::warning(m_widget, tr("Warning"), message, QMessageBox::Ok);
         }
 
         // Identify MFC Gas Type and Flow Rate
@@ -174,7 +175,22 @@ void PDF_Document::extract_text(QChar chamber)
             QString gas = sysConfig_text[i].split(':').back().toUpper();
             if(gas.split(" ").back().contains("NSR"))
             {
-                gas = "N/A";
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::question(m_widget, "NSR Stick",
+                                              "Is optional MFC "
+                                                + QString::number(pos)
+                                                + " present?",
+                                              QMessageBox::Yes|QMessageBox::No);
+
+                if(reply == QMessageBox::Yes)
+                {
+
+                    gas = gas.split(" ").first();
+                }
+                else
+                {
+                    gas = "N/A";
+                }
             }
 
             m_sysConfig[pos-1].gas = gas;
@@ -190,7 +206,7 @@ void PDF_Document::extract_text(QChar chamber)
                     << sysConfig_text[i];
                 //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
                 //qCDebug(lcExample).noquote() << message;
-                QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+                QMessageBox::warning(m_widget, tr("Warning"), message, QMessageBox::Ok);
             }
         }
     }
@@ -220,7 +236,7 @@ void PDF_Document::calculate_cf()
         out << "Failed to calculate N2 Equivalant Flow. PDF is not open.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+        QMessageBox::information(m_widget, tr("Notice"), message, QMessageBox::Ok);
 
         return;
     }
@@ -251,7 +267,7 @@ void PDF_Document::calculate_cf()
                     << flow << " sccm)";
                 //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
                 //qCDebug(lcExample).noquote() << message;
-                QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+                QMessageBox::information(m_widget, tr("Notice"), message, QMessageBox::Ok);
 
                 isZeroFlow = true;
             }
@@ -267,7 +283,7 @@ void PDF_Document::calculate_cf()
                 << gas;
             //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
             //qCDebug(lcExample).noquote() << message;
-            QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+            QMessageBox::information(m_widget, tr("Notice"), message, QMessageBox::Ok);
             continue;
         }
 
@@ -303,7 +319,7 @@ void PDF_Document::export_to_csv()
             << file.errorString();
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::critical(nullptr, tr("Error"), message, QMessageBox::Ok);
+        QMessageBox::critical(m_widget, tr("Error"), message, QMessageBox::Ok);
 
         return;
     }
@@ -362,7 +378,7 @@ void PDF_Document::open(const QUrl &file_path)
         out << "Cannot open PDF. Not a file path.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(m_widget, tr("Warning"), message, QMessageBox::Ok);
         return;
     }
 
@@ -373,7 +389,7 @@ void PDF_Document::open(const QUrl &file_path)
         out << "Cannot open PDF. Invalid file path";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(m_widget, tr("Warning"), message, QMessageBox::Ok);
         return;
     }
 
@@ -384,7 +400,7 @@ void PDF_Document::open(const QUrl &file_path)
         out << "Cannot open PDF. Not a PDF File";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::warning(nullptr, tr("Warning"), message, QMessageBox::Ok);
+        QMessageBox::warning(m_widget, tr("Warning"), message, QMessageBox::Ok);
         return;
     }
 
@@ -417,7 +433,7 @@ void PDF_Document::new_status(QPdfDocument::Status status)
                 << Qt::endl << error;
             //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
             //qCDebug(lcExample).noquote() << message;
-            QMessageBox::critical(nullptr, tr("Error"), message, QMessageBox::Ok);
+            QMessageBox::critical(m_widget, tr("Error"), message, QMessageBox::Ok);
             break;
         }
         default:

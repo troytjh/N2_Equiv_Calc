@@ -156,7 +156,7 @@ void MainWindow::on_read_sysConfig_button_clicked()
         out << "Select a system configuration file by clicking browse.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+        QMessageBox::information(this, tr("Notice"), message, QMessageBox::Ok);
         return;
     }
 
@@ -167,7 +167,7 @@ void MainWindow::on_read_sysConfig_button_clicked()
         out << "Chamber not specified. Defaulting to Chamber 1.";
         //const QString message = tr("%1 is not a valid local file").arg(docLocation.toString());
         //qCDebug(lcExample).noquote() << message;
-        QMessageBox::information(nullptr, tr("Notice"), message, QMessageBox::Ok);
+        QMessageBox::information(this, tr("Notice"), message, QMessageBox::Ok);
     }
 
 
@@ -180,7 +180,7 @@ void MainWindow::on_read_sysConfig_button_clicked()
     }
 
     /* Open the System Configuration Report and extract information */
-    PDF_Document doc;
+    PDF_Document doc(nullptr, this);
     QUrl url = QUrl::fromLocalFile(ui->sysConfig_path->text());
     doc.set_chamber(chamber);
     doc.open(url);
@@ -256,7 +256,7 @@ void MainWindow::setup_theme()
 
 
     /* Setup Style Sheets */
-    ui->centralwidget->setStyleSheet (stylesheets->vertical_scrollbar());
+    ui->centralwidget->setStyleSheet(stylesheets->vertical_scrollbar());
 
     // Set treeview header size for scrollbar gutter
     table_stylesheet = stylesheets->table_scrollbar(
@@ -273,5 +273,5 @@ void MainWindow::setVerticalScrollBarQuirk()
         table_stylesheet
         % stylesheets->vertical_scrollbar_quirk();
 
-    ui->sysConfig_table->setStyleSheet (update_scrollbar);
+    ui->sysConfig_table->setStyleSheet(update_scrollbar);
 }

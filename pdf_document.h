@@ -23,7 +23,7 @@ class PDF_Document : public QObject
 {
     Q_OBJECT
 public:
-    explicit PDF_Document(QObject *parent = nullptr);
+    explicit PDF_Document(QObject *parent = nullptr, QWidget *widget = nullptr);
     ~PDF_Document();
 
     void extract_text(QChar chamber);
@@ -52,6 +52,7 @@ private:
     QVector<mfc_config> m_sysConfig;
     QChar *m_chamber;
 
+    QWidget *m_widget;
 };
 
 
